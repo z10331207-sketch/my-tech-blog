@@ -1,0 +1,56 @@
+---
+import { SITE } from "@config";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Main from "@layouts/Main.astro";
+---
+
+<Layout title={`AI 创作中心 | ${SITE.title}`}>
+  <Header />
+  <Main pageTitle="AI 创作游乐场" pageDesc="输入提示词，直接调用大模型生成专属画作。">
+    <div style="border: 2px solid #555; padding: 20px; border-radius: 8px; margin-top: 2rem;">
+      <input
+        type="text"
+        id="prompt"
+        value="dark anime style, thick coating style, matte texture, masterpiece, 8k"
+        style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #666; background: transparent; color: inherit;"
+      />
+      <button
+        id="btn"
+        style="background: #23262d; color: #fff; padding: 10px 24px; border-radius: 4px; cursor: pointer; font-weight: bold; border: 1px solid #666;"
+      >
+        点击「启动」生成插画
+      </button>
+      <div id="image-container" style="margin-top: 20px; text-align: center; min-height: 200px;">
+        </div>
+    </div>
+  </Main>
+  <Footer />
+
+  <script>
+    const btn = document.getElementById('btn');
+    const promptInput = document.getElementById('prompt');
+    const container = document.getElementById('image-container');
+
+    btn?.addEventListener('click', () => {
+      if (!container || !promptInput) return;
+      const prompt = encodeURIComponent(promptInput.value);
+      container.innerHTML = '<p style="animation: pulse 2s infinite;">AI 正在努力绘制中，请稍候...</p>';
+
+      // 直接调用 Pollinations 的底层免秘钥接口
+      const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=800&height=400&nologo=true`;
+
+      const img = new Image();
+      img.src = imageUrl;
+      img.style.maxWidth = '100%';
+      img.style.borderRadius = '8px';
+      img.style.boxShadow = '0 4px 6px rgba(0,0,0,0.3)';
+
+      img.onload = () => {
+        container.innerHTML = '';
+        container.appendChild(img);
+      };
+    });
+  </script>
+</Layout>
