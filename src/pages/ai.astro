@@ -1,9 +1,9 @@
 ---
-import { SITE } from "@config";
-import Layout from "@layouts/Layout.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import Main from "@layouts/Main.astro";
+import { SITE } from "../config";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Main from "../layouts/Main.astro";
 ---
 
 <Layout title={`AI 创作中心 | ${SITE.title}`}>
@@ -30,7 +30,7 @@ import Main from "@layouts/Main.astro";
 
   <script>
     const btn = document.getElementById('btn');
-    const promptInput = document.getElementById('prompt');
+    const promptInput = document.getElementById('prompt') as HTMLInputElement;
     const container = document.getElementById('image-container');
 
     btn?.addEventListener('click', () => {
